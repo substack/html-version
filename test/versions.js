@@ -3,7 +3,7 @@ var fs = require('fs')
 var versions = require('../')
 
 test('versions', function (t) {
-  t.plan(5)
+  t.plan(6)
   fs.readFile(__dirname + '/data/page.html', function (err, src) {
     t.ifError(err)
     var parsed = versions.parse(src)
@@ -32,6 +32,22 @@ test('versions', function (t) {
       'https://example.com/versions/1.1.0.html',
       'ipfs:QmWMey8Dd1ZH9XWRP3d7N1oSoL35uou1GSMpBwt4UahFSD'
     ].sort())
+    t.deepEqual(parsed.integrity, {
+      /*
+      'https://example.com/versions/1.2.0.html.sig': [
+        'ed25519-XIuQBrc84d+KHryxLJ4b/d0JwTV2FtnTDVuiSjRvwsA='
+      ],
+      */
+      'https://example.com/versions/1.0.0.html': [
+        'sha256-mPjSxFzbBSy+LyCVyylIf5E/7zswbvsL4D/qxCAqrjY'
+      ],
+      'https://example.com/versions/1.0.1.html': [
+        'sha256-Qra3bKdpoprvRqkTF96gWOa0dPkA8MHYxOJqVsvkzIY='
+      ],
+      'https://example.com/versions/1.1.0.html': [
+        'sha256-9VGwnCJuLbwo/N+TL1Ia9whqP8kVwEO8K0IFTUQk19o='
+      ]
+    })
   })
 })
 
