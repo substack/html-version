@@ -28,5 +28,10 @@
   "bugs": {
     "url": "https://github.com/substack/html-version/issues"
   },
-  "homepage": "https://github.com/substack/html-version#readme"
+  "homepage": "https://github.com/substack/html-version#readme",
+  "dependencies": {
+    "has": "^1.0.1",
+    "trumpet": "^1.7.1",
+    "uniq": "^1.0.1"
+  }
 }
