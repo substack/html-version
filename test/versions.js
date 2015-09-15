@@ -33,11 +33,9 @@ test('versions', function (t) {
       'ipfs:QmWMey8Dd1ZH9XWRP3d7N1oSoL35uou1GSMpBwt4UahFSD'
     ].sort())
     t.deepEqual(parsed.integrity, {
-      /*
       'https://example.com/versions/1.2.0.html.sig': [
         'ed25519-XIuQBrc84d+KHryxLJ4b/d0JwTV2FtnTDVuiSjRvwsA='
       ],
-      */
       'https://example.com/versions/1.0.0.html': [
         'sha256-mPjSxFzbBSy+LyCVyylIf5E/7zswbvsL4D/qxCAqrjY'
       ],
