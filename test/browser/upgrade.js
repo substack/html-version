@@ -13,9 +13,9 @@ test('upgrade', function (t) {
   ]
   var pprev = versions.parse(prev)
   var updated = versions.update(src, loc, pprev)
-  var udiv = document.createElement('div')
-  udiv.innerTML = updated
-  t.equal(udiv.querySelector('body').innerText.trim(), 'whatever')
+  var udiv = document.createElement('html')
+  udiv.innerHTML = updated
+  t.equal(udiv.querySelector('body').textContent.trim(), 'whatever')
   var parsed = versions.parse(updated)
   t.deepEqual(fixSort(parsed.versions), {
     '1.0.0': [

@@ -2,8 +2,8 @@ var cheerio = require('cheerio')
 var uniq = require('uniq')
 var has = require('has')
 var detect = require('detect-indent')
-var esc = require('he').encode
 var copy = require('shallow-copy')
+var indent = require('./lib/indent.js')
 
 exports.parse = function (src) {
   var select = cheerio.load(src)
@@ -71,25 +71,7 @@ exports.parse = function (src) {
   }
 }
 
-exports.meta = function (page) {
-  var parts = Object.keys(page.versions).sort().map(function (key) {
-    return page.versions[key].map(function (href) {
-      var grits = ''
-      if (has(page.integrity, href) && page.integrity[href].length) {
-        grits = 'integrity="' + esc(page.integrity[href].join(' ')) + '"'
-      }
-      return '<link rel="version" href="' + esc(href) + '"'
-        + ' version="' + esc(key) + '"' + grits + '>'
-    }).join('\n')
-  })
-  page.latest.forEach(function (href) {
-    parts.push('<link rel="latest-version" href="' + esc(href) + '">')
-  })
-  page.predecessor.forEach(function (href) {
-    parts.push('<link rel="predecessor-version" href="' + esc(href) + '">')
-  })
-  return parts.join('\n')
-}
+exports.meta = require('./meta.js')
 
 exports.update = function (src, loc, prev) {
   prev = copy(prev)
@@ -137,8 +119,4 @@ exports.update = function (src, loc, prev) {
       + '\n' + dent + '</head>\n'
       + post
   }
-}
-
-function indent (str, sp) {
-  return sp + str.split('\n').join('\n' + sp).replace(/ *$/, '')
 }
