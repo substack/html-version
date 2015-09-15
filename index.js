@@ -11,7 +11,7 @@ exports.parse = function (src) {
   info.version = null
   select('meta[name="version"]').each(function (i, link) {
     var ver = link.attribs.content
-    if (ver) info.version = link.attribs.content
+    if (ver) info.version = ver
   })
 
   info.versions = {}

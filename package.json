@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "parse and modify html versions according to the html version spec",
   "main": "index.js",
+  "browser": "browser.js",
   "directories": {
     "example": "example",
     "test": "test"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "test": "tape test/*.js",
+    "browser-test": "browserify -t brfs test/version.js | browser-run -b chrome"
   },
   "repository": {
     "type": "git",
@@ -38,6 +40,8 @@
     "uniq": "^1.0.1"
   },
   "devDependencies": {
+    "brfs": "^1.4.1",
+    "browser-run": "^2.4.0",
     "tape": "^4.2.0"
   }
 }
