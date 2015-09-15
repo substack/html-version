@@ -30,7 +30,10 @@
   },
   "homepage": "https://github.com/substack/html-version#readme",
   "dependencies": {
+    "detect-indent": "^4.0.0",
     "has": "^1.0.1",
+    "he": "^0.5.0",
+    "shallow-copy": "0.0.1",
     "trumpet": "^1.7.1",
     "uniq": "^1.0.1"
   },

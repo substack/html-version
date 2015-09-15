@@ -1,6 +1,9 @@
 var cheerio = require('cheerio')
 var uniq = require('uniq')
 var has = require('has')
+var detect = require('detect-indent')
+var esc = require('he').encode
+var copy = require('shallow-copy')
 
 exports.parse = function (src) {
   var select = cheerio.load(src)
@@ -66,4 +69,76 @@ exports.parse = function (src) {
       grits.push.apply(grits, grit.split(/\s+/).filter(Boolean))
     }
   }
+}
+
+exports.meta = function (page) {
+  var parts = Object.keys(page.versions).sort().map(function (key) {
+    return page.versions[key].map(function (href) {
+      var grits = ''
+      if (has(page.integrity, href) && page.integrity[href].length) {
+        grits = 'integrity="' + esc(page.integrity[href].join(' ')) + '"'
+      }
+      return '<link rel="version" href="' + esc(href) + '"'
+        + ' version="' + esc(key) + '"' + grits + '>'
+    }).join('\n')
+  })
+  page.latest.forEach(function (href) {
+    parts.push('<link rel="latest-version" href="' + esc(href) + '">')
+  })
+  page.predecessor.forEach(function (href) {
+    parts.push('<link rel="predecessor-version" href="' + esc(href) + '">')
+  })
+  return parts.join('\n')
+}
+
+exports.update = function (src, loc, prev) {
+  prev = copy(prev)
+  if (prev.version) {
+    prev.versions[prev.version] = loc
+    prev.predecessor = loc
+  }
+  var select = cheerio.load(src)
+  var meta = exports.meta(prev)
+  var head = select('head')[0]
+  var detected = detect(typeof src === 'string' ? src : src.toString())
+    .indent
+
+  if (head) {
+    head = select(head)
+    var pre = head.html()
+    var postdent = /(\s*)$/.exec(pre.split('\n').slice(-1)[0])[1].length
+    var dent = Array(
+      /^(\s*)/.exec(pre.split('\n').slice(-2,-1)[0])[1].length+1
+    ).join(' ')
+    head.html(
+      pre.replace(/\s*$/, '\n')
+      + indent(meta, dent) + '\n'
+      + Array(postdent + 1).join(' ')
+    )
+    return select.html()
+  }
+  var html = select('html')[0]
+  if (html) {
+    html = select(html)
+    var post = html.html()
+    var dent = Array(/^[\r\n]*(\s*)/.exec(post)[1].length + 1).join(' ')
+    html.html(
+      '\n' + dent + '<head>'
+      + '\n' + indent(meta, dent + detected)
+      + '\n' + dent + '</head>\n'
+      + html.html()
+    )
+    return select.html()
+  } else {
+    var post = select.html()
+    var dent = Array(/^[\r\n]*(\s*)/.exec(post)[1].length + 1).join(' ')
+    return dent + '<head>\n'
+      + indent(meta, dent + detected)
+      + '\n' + dent + '</head>\n'
+      + post
+  }
+}
+
+function indent (str, sp) {
+  return sp + str.split('\n').join('\n' + sp).replace(/ *$/, '')
 }
