@@ -46,7 +46,7 @@ exports.parse = function (src) {
   select('link[rel="predecessor-version"]').each(function (i, link) {
     var href = link.attribs.href
     var ver = link.attribs.version
-    if (href) info.predecessor = href
+    if (href) info.predecessor.push(href)
     if (ver && has(info.versions, ver)) {
       info.predecessor.push.apply(info.predecessor, info.versions[ver])
     }
