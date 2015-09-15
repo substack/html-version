@@ -1,0 +1,32 @@
+{
+  "name": "html-version",
+  "version": "1.0.0",
+  "description": "parse and modify html versions according to the html version spec",
+  "main": "index.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/html-version.git"
+  },
+  "keywords": [
+    "html",
+    "version",
+    "offline",
+    "permanent",
+    "merkle",
+    "DAG",
+    "webapp"
+  ],
+  "author": "substack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/substack/html-version/issues"
+  },
+  "homepage": "https://github.com/substack/html-version#readme"
+}
