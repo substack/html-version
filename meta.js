@@ -1,7 +1,7 @@
 var has = require('has')
 
 module.exports = function (page) {
-  var parts = Object.keys(page.versions).sort().map(function (key) {
+  var parts = Object.keys(page.versions || {}).sort().map(function (key) {
     return page.versions[key].map(function (href) {
       var grits = ''
       if (has(page.integrity, href) && page.integrity[href].length) {
@@ -11,10 +11,10 @@ module.exports = function (page) {
         + ' version="' + esc(key) + '"' + grits + '>'
     }).join('\n')
   })
-  page.latest.forEach(function (href) {
+  ;(page.latest || []).forEach(function (href) {
     parts.push('<link rel="latest-version" href="' + esc(href) + '">')
   })
-  page.predecessor.forEach(function (href) {
+  ;(page.predecessor || []).forEach(function (href) {
     parts.push('<link rel="predecessor-version" href="' + esc(href) + '">')
   })
   return parts.join('\n')
