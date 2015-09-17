@@ -1,6 +1,6 @@
 {
   "name": "html-version",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "parse and modify html versions according to the html version spec",
   "main": "index.js",
   "browser": "browser.js",
