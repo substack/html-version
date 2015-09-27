@@ -74,6 +74,7 @@ exports.parse = function (src) {
 exports.meta = require('./meta.js')
 
 exports.update = function (src, loc, prev) {
+  if (Object.keys(prev).length === 0 && loc.length === 0) return src
   prev = copy(prev)
   if (prev.version) {
     prev.versions[prev.version] = loc
